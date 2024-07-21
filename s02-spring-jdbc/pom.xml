@@ -14,8 +14,29 @@
 	<artifactId>s02-spring-jdbc</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<modules>
+		<module>00-domains</module>
 		<module>01-embedded-xml</module>
 		<module>02-embedded-java</module>
 		<module>03-embedded-boots</module>
@@ -23,4 +44,16 @@
 		<module>05-cb-java</module>
 		<module>06-cp-boots</module>
 	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<release>21</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>	
 </project>
