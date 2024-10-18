@@ -1,0 +1,19 @@
+version: '3.8'
+
+networks:
+  distance:
+volumes:
+  distance-db:
+
+services:
+  db:
+    build: ./distance-db
+    container_name: distance-db
+    environment:
+      - TZ=Asia/Yangon
+    networks:
+      - distance
+    ports:
+      - 5432:5432
+    volumes:
+      - distance-db:/var/lib/postgresql/data
