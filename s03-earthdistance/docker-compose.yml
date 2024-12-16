@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 networks:
   distance:
@@ -7,13 +7,18 @@ volumes:
 
 services:
   db:
-    build: ./distance-db
+    image: postgres:16-alpine
     container_name: distance-db
     environment:
       - TZ=Asia/Yangon
+      - POSTGRES_USER=distance
+      - POSTGRES_PASSWORD=distance
+      - POSTGRES_DB=distance
+      - POSTGRESQL_MAX_CONNECTIONS=200
     networks:
       - distance
     ports:
       - 5432:5432
     volumes:
       - distance-db:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
