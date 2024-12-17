@@ -2,23 +2,25 @@ package com.jdc.earthdistance.api;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jdc.earthdistance.api.input.AgentShopSearch;
-import com.jdc.earthdistance.api.output.AgentShopInfo;
-import com.jdc.earthdistance.model.service.AgentShopService;
+import com.jdc.earthdistance.api.output.ShopDistance;
+import com.jdc.earthdistance.model.repo.AgentShopRepo;
 
 @RestController
 @RequestMapping("shops/nearby")
 public class AgentShopSearchApi {
 	
-	private AgentShopService service;
+	@Autowired
+	private AgentShopRepo repo;
 
 	@GetMapping
-	List<AgentShopInfo> search(AgentShopSearch search) {
-		return service.search(search);
+	List<ShopDistance> search(@RequestParam double lat, @RequestParam double lon, @RequestParam double radius) {
+		return repo.searchNearBy(lat, lon , radius);
 	}
 
 }
