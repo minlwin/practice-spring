@@ -1,28 +1,34 @@
 package com.jdc.spring;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.jdc.spring.domain.EncryptionConverter;
+import com.jdc.spring.domain.entity.Customer;
+import com.jdc.spring.domain.service.CustomerService;
 
 @SpringBootTest
 class S04AttributeConverterApplicationTests {
 	
 	@Autowired
-	private EncryptionConverter converter;
+	private CustomerService service;
 
 	@Test
 	void contextLoads() {
 		
-		var original = "1234567890123456";
-		var encrypted = converter.convertToDatabaseColumn(original);
+		var entity = new Customer();
+		entity.setName("Zaw Min Lwin");
+		entity.setEmail("minlwin@gmail.com");
+		entity.setPhone("09782003098");
+		entity.setNrcNumber("12/DAGAYA(N)016769");
 		
-		System.out.println(encrypted);
+		var id = service.create(entity);
 		
-		var decrypted = converter.convertToEntityAttribute(encrypted);
+		var output = service.findById(id);
 		
-		System.out.println(decrypted);
+		assertEquals(entity.getNrcNumber(), output.getNrcNumber());
 	}
 
 }

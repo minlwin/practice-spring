@@ -1,6 +1,9 @@
 package com.jdc.spring.domain.entity;
 
+import com.jdc.spring.domain.EncryptionConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +24,7 @@ public class Customer {
 	private String phone;
 	private String email;
 	
+	@Convert(converter = EncryptionConverter.class)
 	@Column(nullable = false)
 	private String nrcNumber;
 }
