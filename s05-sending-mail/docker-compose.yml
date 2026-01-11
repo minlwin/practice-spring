@@ -1,0 +1,31 @@
+services:
+  database:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: database
+    platform: linux/amd64
+    environment:
+      - ORACLE_PASSWORD=testing
+      - ORACLE_DATABASE=testing
+      - APP_USER=testing
+      - APP_USER_PASSWORD=testing
+    ports:
+      - "1521:1521"
+    volumes:
+      - dbdata:/opt/oracle/oradata
+    networks:
+      - mailnet
+
+  mail:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - mailnet
+
+volumes:
+  dbdata:
+
+networks:
+  mailnet:
