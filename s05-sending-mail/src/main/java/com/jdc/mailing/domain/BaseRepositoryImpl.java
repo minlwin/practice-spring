@@ -16,7 +16,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implements BaseRepository<T, ID> {
 
 	private final EntityManager entityManager;
-	
+
 	public BaseRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
 		super(entityInformation, entityManager);
 		this.entityManager = entityManager;
@@ -24,21 +24,31 @@ public class BaseRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> implem
 
 	@Override
 	public <R> List<R> search(Function<CriteriaBuilder, CriteriaQuery<R>> queryFunc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <R> Optional<R> findOne(Function<CriteriaBuilder, CriteriaQuery<R>> queryFunc) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return entityManager.createQuery(queryFunc.apply(entityManager.getCriteriaBuilder())).getResultList();
 	}
 
 	@Override
 	public <R> PageResult<R> search(Function<CriteriaBuilder, CriteriaQuery<R>> queryFunc,
 			Function<CriteriaBuilder, CriteriaQuery<Long>> countFunc, int page, int size) {
-		// TODO Auto-generated method stub
-		return null;
+		var count = entityManager.createQuery(countFunc.apply(entityManager.getCriteriaBuilder()))
+				.getSingleResult();
+		
+		var query = entityManager.createQuery(queryFunc.apply(entityManager.getCriteriaBuilder()));
+		query.setFirstResult((page - 1) * size);
+		query.setMaxResults(size);
+			
+		return PageResult.<R>builder()
+				.page(page)
+				.size(size)
+				.total(count)
+				.contents(query.getResultList())
+				.build();
+	}
+
+	@Override
+	public <R> Optional<R> findOne(Function<CriteriaBuilder, CriteriaQuery<R>> queryFunc) {
+		return Optional.ofNullable(
+				entityManager.createQuery(queryFunc.apply(entityManager.getCriteriaBuilder())).getSingleResult());
 	}
 
 }
