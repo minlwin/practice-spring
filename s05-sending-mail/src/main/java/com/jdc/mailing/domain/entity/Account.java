@@ -1,7 +1,5 @@
 package com.jdc.mailing.domain.entity;
 
-import java.time.LocalDateTime;
-
 import com.jdc.mailing.domain.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -27,15 +25,15 @@ public class Account extends BaseEntity {
 	
 	@Column(nullable = false)
 	private String name;
-	@Column(nullable = false, unique = true)
+	
+	@Column(nullable = false)
 	private String email;
+
 	@Column(nullable = false)
 	private String password;
 	
 	@Column(nullable = false)
-	private String verificationCode;
-	@Column(nullable = false)
-	private LocalDateTime generatedAt;
-	private LocalDateTime verifiedAt;
-
+	private Role role;
+	
+	private boolean activated;
 }
